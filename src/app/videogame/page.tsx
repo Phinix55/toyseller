@@ -313,8 +313,8 @@ export default function VideoGamePage() {
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             className="absolute inset-0 flex items-center justify-center w-full h-full bg-white z-40"
           >
-            {/* The Straight-On Gameplay Device Container */}
-            <div className="relative h-screen w-auto max-w-none aspect-[3/2] flex items-center justify-center">
+            {/* The Straight-On Gameplay Device Container (Desktop) */}
+            <div className="hidden md:flex relative h-screen w-auto max-w-none aspect-[3/2] items-center justify-center">
               <img
                 src="/gameplay.png"
                 alt="Game Console"
@@ -327,6 +327,24 @@ export default function VideoGamePage() {
                 className="absolute top-[18%] left-[30%] w-[39.5%] h-[75%] z-0 overflow-hidden"
               >
                 <RacingGame />
+              </div>
+            </div>
+
+            {/* Mobile Gameplay Container */}
+            <div className="md:hidden absolute inset-0 overflow-hidden flex items-center justify-center bg-white">
+              <div className="relative h-full aspect-[1024/1536] shrink-0">
+                <img
+                  src="/mobgameplay.png"
+                  alt="Game Console Mobile"
+                  className="absolute inset-0 w-full h-full object-fill pointer-events-none z-10"
+                />
+                
+                {/* Mathematically precise mask for transparent area, with slight bleed on bottom to fill gaps */}
+                <div
+                  className="absolute top-[15.5%] left-[25%] w-[50%] h-[71%] z-0 overflow-hidden flex items-stretch justify-stretch"
+                >
+                  <RacingGame isMobile={true} />
+                </div>
               </div>
             </div>
           </motion.div>

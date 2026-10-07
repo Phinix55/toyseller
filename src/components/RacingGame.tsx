@@ -81,7 +81,7 @@ class SoundFX {
   }
 }
 
-export default function RacingGame() {
+export default function RacingGame({ isMobile = false }: { isMobile?: boolean }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [gameOver, setGameOver] = useState(false);
@@ -103,7 +103,9 @@ export default function RacingGame() {
 
     // Fixed internal resolution for chunky retro pixels
     canvas.width = 160; 
-    canvas.height = 144;
+    canvas.height = isMobile ? 333 : 144;
+    
+    const PLAYER_Y = isMobile ? 280 : 120;
     
     const sfx = new SoundFX();
     sfx.init();
@@ -149,14 +151,53 @@ export default function RacingGame() {
       } else if (e.key === ' ' || e.key === 'Spacebar') {
         // Fire laser with cooldown (only 1 shot every 15 frames)
         if (frameCount - lastShotFrame > 15) {
-          lasers.push({ x: lanes[playerLane], y: 120, active: true });
+          lasers.push({ x: lanes[playerLane], y: PLAYER_Y, active: true });
           sfx.playLaser();
           lastShotFrame = frameCount;
         }
       }
     };
     
+    // Touch Controls
+    let touchStartX = 0;
+    let lastTapTime = 0;
+
+    const handleTouchStart = (e: TouchEvent) => {
+      touchStartX = e.changedTouches[0].screenX;
+    };
+
+    const handleTouchEnd = (e: TouchEvent) => {
+      const touchEndX = e.changedTouches[0].screenX;
+      
+      // Swipe Detection
+      if (touchEndX < touchStartX - 30) {
+        if (playerLane > 0) {
+          playerLane--;
+          sfx.playBlip();
+        }
+      } else if (touchEndX > touchStartX + 30) {
+        if (playerLane < 2) {
+          playerLane++;
+          sfx.playBlip();
+        }
+      }
+
+      // Double Tap Detection
+      const currentTime = new Date().getTime();
+      const tapLength = currentTime - lastTapTime;
+      if (tapLength < 300 && tapLength > 0) {
+        if (frameCount - lastShotFrame > 15) {
+          lasers.push({ x: lanes[playerLane], y: PLAYER_Y, active: true });
+          sfx.playLaser();
+          lastShotFrame = frameCount;
+        }
+      }
+      lastTapTime = currentTime;
+    };
+
     window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('touchstart', handleTouchStart);
+    window.addEventListener('touchend', handleTouchEnd);
 
     // Drawing utils
     const drawCar = (x: number, y: number) => {
@@ -285,8 +326,7 @@ export default function RacingGame() {
 
         // Collision with Player
         const playerX = lanes[playerLane];
-        const playerY = 120;
-        if (Math.abs(obs.x - playerX) < 12 && Math.abs(obs.y - playerY) < 16) {
+        if (Math.abs(obs.x - playerX) < 12 && Math.abs(obs.y - PLAYER_Y) < 16) {
           // Crash!
           bgm.pause(); // Instantly kill the music
           setScore(currentScore);
@@ -303,7 +343,7 @@ export default function RacingGame() {
       lasers = lasers.filter(l => l.active);
 
       // Draw Player
-      drawCar(lanes[playerLane], 120);
+      drawCar(lanes[playerLane], PLAYER_Y);
 
       // Draw HUD
       ctx.fillStyle = '#0f380f';
