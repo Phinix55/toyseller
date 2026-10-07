@@ -2,26 +2,35 @@
 
 import { useState } from "react";
 import { Canvas } from "@react-three/fiber";
-import { FlutedGlass } from "./FlutedGlass";
+import { PortalScene } from "./PortalScene";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Hero() {
   const [isHindi, setIsHindi] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   return (
     <div className="relative w-screen h-screen overflow-hidden bg-black">
       {/* 3D WebGL Background Layer */}
       <div className="absolute inset-0 z-0 pointer-events-auto">
         <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
-          <FlutedGlass />
+          <PortalScene isPlaying={isPlaying} />
         </Canvas>
       </div>
 
       {/* Dark Overlay for Text Legibility */}
-      <div className="absolute inset-0 z-[5] bg-black/40 pointer-events-none" />
+      <motion.div 
+        animate={{ opacity: isPlaying ? 0 : 1 }}
+        transition={{ duration: 1.5 }}
+        className="absolute inset-0 z-[5] bg-black/40 pointer-events-none" 
+      />
 
       {/* 2D UI Overlay Layer */}
-      <div className="absolute inset-0 z-10 pointer-events-none flex flex-col justify-between p-8">
+      <motion.div 
+        animate={{ opacity: isPlaying ? 0 : 1 }}
+        transition={{ duration: 1 }}
+        className={`absolute inset-0 z-10 flex flex-col justify-between p-8 ${isPlaying ? 'pointer-events-none' : 'pointer-events-none'}`}
+      >
 
         {/* Top Header: Language Toggle */}
         <div className="w-full flex justify-end pointer-events-auto">
@@ -82,7 +91,10 @@ export default function Hero() {
 
         {/* Bottom CTA */}
         <div className="w-full flex justify-center pb-8 pointer-events-auto">
-          <button className="group flex flex-col items-center gap-3">
+          <button 
+            onClick={() => setIsPlaying(true)}
+            className="group flex flex-col items-center gap-3"
+          >
             <span className="text-white/60 text-sm tracking-[0.3em] uppercase group-hover:text-white transition-colors duration-500">
               Tap to enter
             </span>
@@ -96,7 +108,7 @@ export default function Hero() {
           </button>
         </div>
 
-      </div>
+      </motion.div>
     </div>
   );
 }
