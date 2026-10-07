@@ -44,10 +44,15 @@ export default function VideoGamePage() {
               className="absolute top-[10%] left-[30%] right-[30%] bottom-[62%] bg-[#8bac0f] hover:bg-[#9bbc0f] flex items-center justify-center cursor-pointer transition-all duration-300 z-0"
               onClick={() => setScreen('instructions')}
             >
-              <div className="flex flex-col items-center gap-4">
-                <p className="text-[#0f380f] font-pixel text-sm sm:text-base md:text-xl animate-pulse text-center leading-relaxed tracking-wider">
-                  TAP TO<br/>PLAY
+              <div className="flex flex-col items-center justify-center gap-2 w-full px-4 translate-y-3">
+                <p className="text-[#0f380f] font-pixel text-[8px] sm:text-[10px] text-center leading-relaxed tracking-widest opacity-80">
+                  GAME &<br/>INSTRUCTIONS
                 </p>
+                <div className="border-2 border-[#0f380f] px-3 py-1.5 animate-pulse mt-1">
+                  <p className="text-[#0f380f] font-pixel text-[8px] sm:text-[10px] text-center tracking-wider whitespace-nowrap">
+                    TAP HERE
+                  </p>
+                </div>
               </div>
             </div>
           </motion.div>
@@ -62,24 +67,57 @@ export default function VideoGamePage() {
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
             className="absolute inset-0 flex w-full h-full"
           >
-            {/* Left Side: Rules (Temporarily Hidden) */}
-            {/*
-            <div className="w-1/2 h-full flex flex-col justify-center px-12 lg:px-24 xl:px-32 space-y-12 bg-white relative z-10 shadow-2xl">
-              ...
-            </div>
-            */}
+            {/* Left Side: Game Instructions (Minimalist Bottom-Left) */}
+            <div className="w-full lg:w-[40%] h-full flex flex-col justify-end pb-16 px-8 lg:px-20 xl:px-24 bg-transparent relative z-10">
+              <div className="space-y-6 max-w-sm">
+                <div>
+                  <h1 className="text-4xl lg:text-5xl font-black tracking-tighter text-black mb-1">
+                    INSTRUCTIONS
+                  </h1>
+                  <h2 className="text-xl font-bold tracking-tight text-black/50">
+                    CONTROLS
+                  </h2>
+                </div>
 
-            {/* Right Side: Visual (Now Full Screen) */}
-            <div className="w-full h-full flex items-center justify-end relative z-0">
+                <div className="space-y-4">
+                  <div className="flex items-center gap-4">
+                    <div className="flex gap-2">
+                      <kbd className="w-10 h-10 flex items-center justify-center bg-white border-2 border-gray-200 rounded-lg shadow-[0_4px_0_#e5e7eb] text-gray-700 font-black text-lg">←</kbd>
+                      <kbd className="w-10 h-10 flex items-center justify-center bg-white border-2 border-gray-200 rounded-lg shadow-[0_4px_0_#e5e7eb] text-gray-700 font-black text-lg">→</kbd>
+                    </div>
+                    <span className="text-black/60 font-semibold tracking-wide text-sm">STEER</span>
+                  </div>
+
+                  <div className="flex items-center gap-4">
+                    <kbd className="w-22 px-4 h-10 flex items-center justify-center bg-white border-2 border-gray-200 rounded-lg shadow-[0_4px_0_#e5e7eb] text-gray-700 font-black text-xs uppercase tracking-widest">SPACE</kbd>
+                    <span className="text-black/60 font-semibold tracking-wide text-sm">SHOOT TARGET (💀)</span>
+                  </div>
+                </div>
+
+                <p className="text-red-500/80 font-bold text-xs uppercase tracking-wider pt-2">
+                  * SPEED INCREASES WITH SCORE
+                </p>
+              </div>
+            </div>
+
+            {/* Right Side: Visual */}
+            <div className="hidden lg:flex w-[60%] h-full items-center justify-end relative z-0">
               <div className="relative h-full aspect-[3/2] shrink-0">
                 {/* Tilted Digital Screen Overlay (Sitting behind the device bezel) */}
                 <div 
                   className="absolute top-[11%] left-[23%] w-[28%] h-[38%] bg-[#8bac0f] hover:bg-[#9bbc0f] flex items-center justify-center cursor-pointer -rotate-[13deg] transition-colors z-0"
                   onClick={() => setScreen('gameplay')}
                 >
-                  <p className="text-[#0f380f] font-pixel text-sm sm:text-base md:text-xl animate-pulse text-center leading-relaxed tracking-wider -translate-x-4 -translate-y-6 lg:-translate-x-6 lg:-translate-y-10">
-                    START<br/>GAME
-                  </p>
+                  <div className="flex flex-col items-center justify-center gap-3 -translate-x-6 -translate-y-8 lg:-translate-x-10 lg:-translate-y-14">
+                    <p className="text-[#0f380f] font-pixel text-[8px] sm:text-[10px] text-center leading-relaxed tracking-widest opacity-80">
+                      RACING<br/>CHAMPION
+                    </p>
+                    <div className="border-2 border-[#0f380f] px-2 py-1.5 animate-pulse mt-1">
+                      <p className="text-[#0f380f] font-pixel text-[8px] sm:text-[10px] text-center tracking-wider whitespace-nowrap">
+                        TAP TO PLAY
+                      </p>
+                    </div>
+                  </div>
                 </div>
 
                 <img 
