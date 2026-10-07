@@ -24,6 +24,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <head>
+        <link rel="preload" as="image" href="/Khilonewala.avif" type="image/avif" />
+        <link rel="preload" as="image" href="/bg1.avif" type="image/avif" />
+        <link rel="preload" as="image" href="/mobbg1.avif" type="image/avif" />
+        <link rel="preload" as="image" href="/videogame.avif" type="image/avif" />
+        <link rel="preload" as="image" href="/bg6.avif" type="image/avif" />
+        <link rel="preload" as="image" href="/mobbg6.avif" type="image/avif" />
+        <link rel="preload" as="image" href="/gameplay.avif" type="image/avif" />
+        <link rel="preload" as="image" href="/mobgameplay.avif" type="image/avif" />
         <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
         <style>{`
           .font-pixel { font-family: 'Press Start 2P', cursive; }

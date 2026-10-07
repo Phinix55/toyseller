@@ -57,7 +57,7 @@ export default function VideoGamePage() {
   };
 
   return (
-    <main className="relative min-h-screen w-full bg-white overflow-hidden flex items-center justify-center">
+    <main className="relative min-h-[100dvh] w-full bg-white overflow-hidden flex items-center justify-center">
       {/* Back Button */}
       <button
         onClick={() => {
@@ -136,7 +136,7 @@ export default function VideoGamePage() {
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 1.0 }}
-              className="md:hidden absolute bottom-6 left-0 right-0 px-4 z-20 pointer-events-auto flex gap-3"
+              className="md:hidden absolute bottom-[calc(1.5rem+env(safe-area-inset-bottom))] left-0 right-0 px-4 z-20 pointer-events-auto flex gap-3"
             >
               <button 
                 onClick={() => setActiveSheet('about')}
@@ -314,7 +314,7 @@ export default function VideoGamePage() {
             className="absolute inset-0 flex items-center justify-center w-full h-full bg-white z-40"
           >
             {/* The Straight-On Gameplay Device Container (Desktop) */}
-            <div className="hidden md:flex relative h-screen w-auto max-w-none aspect-[3/2] items-center justify-center">
+            <div className="hidden md:flex relative h-[100dvh] w-auto max-w-none aspect-[3/2] items-center justify-center">
               <img
                 src="/gameplay.avif"
                 alt="Game Console"

@@ -4,6 +4,7 @@ import { useState, useEffect, Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
 import { PortalScene } from "./PortalScene";
 import { motion, AnimatePresence } from "framer-motion";
+import { Loader } from "@react-three/drei";
 
 export default function Hero() {
   const [isHindi, setIsHindi] = useState(true);
@@ -62,7 +63,7 @@ export default function Hero() {
   }, [isPlaying]);
 
   return (
-    <div className="relative w-screen h-screen overflow-hidden bg-black">
+    <div className="relative w-screen h-[100dvh] overflow-hidden bg-black">
       {/* 3D WebGL Background Layer */}
       <div className="absolute inset-0 z-0 pointer-events-auto">
         <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
@@ -70,6 +71,12 @@ export default function Hero() {
             <PortalScene isPlaying={isPlaying} isMobile={isMobile} />
           </Suspense>
         </Canvas>
+        <Loader
+          containerStyles={{ background: '#000', zIndex: 100 }}
+          innerStyles={{ width: '250px', background: 'rgba(255,255,255,0.1)', height: '4px' }}
+          barStyles={{ background: '#fff', height: '4px' }}
+          dataInterpolation={(p) => `INITIALIZING ${p.toFixed(0)}%`}
+        />
       </div>
 
       {/* Dark Overlay for Text Legibility */}
