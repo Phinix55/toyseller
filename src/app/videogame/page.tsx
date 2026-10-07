@@ -1,49 +1,95 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 
 export default function VideoGamePage() {
   const router = useRouter();
+  const [screen, setScreen] = useState<'intro' | 'instructions'>('intro');
 
   return (
-    <main className="min-h-screen w-full bg-white flex flex-col items-center justify-center p-8">
+    <main className="relative min-h-screen w-full bg-white overflow-hidden flex items-center justify-center">
       {/* Back Button */}
       <button 
-        onClick={() => router.push('/')}
-        className="absolute top-8 left-8 text-black/60 hover:text-black transition-colors font-medium text-sm flex items-center gap-2"
+        onClick={() => {
+          if (screen === 'instructions') setScreen('intro');
+          else router.push('/');
+        }}
+        className="absolute top-8 left-8 text-black/60 hover:text-black transition-colors font-medium text-sm flex items-center gap-2 z-50"
       >
-        <span>←</span> Back to Story
+        <span>←</span> {screen === 'instructions' ? "Back to Gameboy" : "Back to Story"}
       </button>
 
-      {/* Video Game Container */}
-      <motion.div 
-        initial={{ opacity: 0, y: 40, scale: 0.95 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-        className="relative w-full max-w-2xl mx-auto flex justify-center items-center"
-      >
-        <img 
-          src="/videogame.png" 
-          alt="Vintage Video Game" 
-          className="w-full h-auto object-contain drop-shadow-2xl relative z-10 pointer-events-none" 
-        />
-        
-        {/* Transparent Interactive Screen Overlay (Sitting behind the device bezel) */}
-        <div 
-          className="absolute top-[10%] left-[30%] right-[30%] bottom-[50%] bg-[#8bac0f] hover:bg-[#9bbc0f] flex items-center justify-center cursor-pointer transition-all duration-300 z-0"
-          onClick={() => {
-            console.log("Start game!");
-            // Add game logic here
-          }}
-        >
-          <div className="flex flex-col items-center gap-4">
-            <p className="text-[#0f380f] font-pixel text-sm sm:text-base md:text-xl animate-pulse text-center leading-relaxed tracking-wider">
-              TAP TO<br/>PLAY
-            </p>
-          </div>
-        </div>
-      </motion.div>
+      <AnimatePresence mode="wait">
+        {screen === 'intro' && (
+          <motion.div 
+            key="intro"
+            initial={{ opacity: 0, x: -50, scale: 0.95 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            exit={{ opacity: 0, x: -100, scale: 0.95 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="relative w-full max-w-2xl mx-auto flex justify-center items-center p-8 md:p-16"
+          >
+            <img 
+              src="/videogame.png" 
+              alt="Vintage Video Game" 
+              className="w-full h-auto object-contain drop-shadow-2xl relative z-10 pointer-events-none" 
+            />
+            
+            {/* Transparent Interactive Screen Overlay (Sitting behind the device bezel) */}
+            <div 
+              className="absolute top-[10%] left-[30%] right-[30%] bottom-[62%] bg-[#8bac0f] hover:bg-[#9bbc0f] flex items-center justify-center cursor-pointer transition-all duration-300 z-0"
+              onClick={() => setScreen('instructions')}
+            >
+              <div className="flex flex-col items-center gap-4">
+                <p className="text-[#0f380f] font-pixel text-sm sm:text-base md:text-xl animate-pulse text-center leading-relaxed tracking-wider">
+                  TAP TO<br/>PLAY
+                </p>
+              </div>
+            </div>
+          </motion.div>
+        )}
+
+        {screen === 'instructions' && (
+          <motion.div 
+            key="instructions"
+            initial={{ opacity: 0, x: 100 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 50 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+            className="absolute inset-0 flex w-full h-full"
+          >
+            {/* Left Side: Rules (Temporarily Hidden) */}
+            {/*
+            <div className="w-1/2 h-full flex flex-col justify-center px-12 lg:px-24 xl:px-32 space-y-12 bg-white relative z-10 shadow-2xl">
+              ...
+            </div>
+            */}
+
+            {/* Right Side: Visual (Now Full Screen) */}
+            <div className="w-full h-full flex items-center justify-end relative z-0">
+              <div className="relative h-full aspect-[3/2] shrink-0">
+                {/* Tilted Digital Screen Overlay (Sitting behind the device bezel) */}
+                <div 
+                  className="absolute top-[11%] left-[23%] w-[28%] h-[38%] bg-[#8bac0f] hover:bg-[#9bbc0f] flex items-center justify-center cursor-pointer -rotate-[13deg] transition-colors z-0"
+                  onClick={() => console.log("Start Game Clicked!")}
+                >
+                  <p className="text-[#0f380f] font-pixel text-sm sm:text-base md:text-xl animate-pulse text-center leading-relaxed tracking-wider -translate-x-4 -translate-y-6 lg:-translate-x-6 lg:-translate-y-10">
+                    START<br/>GAME
+                  </p>
+                </div>
+
+                <img 
+                  src="/bg6.png" 
+                  alt="Gameplay Preview" 
+                  className="w-full h-full object-cover drop-shadow-[0_20px_50px_rgba(0,0,0,0.2)] pointer-events-none relative z-10"
+                />
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </main>
   );
 }
