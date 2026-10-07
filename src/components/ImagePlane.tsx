@@ -4,15 +4,7 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { useTexture } from "@react-three/drei";
 import * as THREE from "three";
 
-export function ImagePlane({ 
-  texturePath, 
-  zPosition, 
-  minimizeToCorner = false 
-}: { 
-  texturePath: string, 
-  zPosition: number,
-  minimizeToCorner?: boolean
-}) {
+export function ImagePlane({ texturePath, zPosition }: { texturePath: string, zPosition: number }) {
   const texture = useTexture(texturePath);
   const { viewport, camera } = useThree();
   const materialRef = useRef<THREE.ShaderMaterial>(null);
@@ -81,36 +73,8 @@ export function ImagePlane({
 
       // Dynamic Scaling: guarantee perfect full-screen coverage at all distances
       const absDistance = Math.abs(distance);
-      const baseScaleFactor = Math.max(0.001, absDistance / 5.0);
-      
-      // Minimize to Corner Logic
-      if (minimizeToCorner) {
-        // Shrink to 30% of its normal full-screen size
-        targetScaleMult.current = THREE.MathUtils.lerp(targetScaleMult.current, 0.3, 0.04);
-        
-        // Calculate destination corner based on frustum at this distance
-        const frustumW = viewport.width * baseScaleFactor;
-        const frustumH = viewport.height * baseScaleFactor;
-        
-        const currentW = frustumW * targetScaleMult.current;
-        const currentH = frustumH * targetScaleMult.current;
-        
-        // Bottom Right Corner (with 5% padding)
-        const destX = (frustumW / 2) - (currentW / 2) - (0.05 * frustumW);
-        const destY = -(frustumH / 2) + (currentH / 2) + (0.05 * frustumH);
-        
-        currentPos.current.x = THREE.MathUtils.lerp(currentPos.current.x, destX, 0.04);
-        currentPos.current.y = THREE.MathUtils.lerp(currentPos.current.y, destY, 0.04);
-      } else {
-        targetScaleMult.current = THREE.MathUtils.lerp(targetScaleMult.current, 1.0, 0.04);
-        currentPos.current.x = THREE.MathUtils.lerp(currentPos.current.x, 0, 0.04);
-        currentPos.current.y = THREE.MathUtils.lerp(currentPos.current.y, 0, 0.04);
-      }
-
-      meshRef.current.position.copy(currentPos.current);
-      
-      const finalScale = baseScaleFactor * targetScaleMult.current;
-      meshRef.current.scale.set(finalScale, finalScale, 1.0);
+      const scaleFactor = Math.max(0.001, absDistance / 5.0);
+      meshRef.current.scale.set(scaleFactor, scaleFactor, 1.0);
       
       // The "Ghosting" Fade Effect
       // Start fading out elegantly as the camera approaches to prevent clipping

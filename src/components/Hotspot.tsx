@@ -4,8 +4,11 @@ export function Hotspot({ position, onClick }: { position: [number, number, numb
   return (
     <Html position={position} center zIndexRange={[100, 0]}>
       <div 
-        className="flex flex-col items-center justify-center cursor-pointer group"
-        onClick={onClick}
+        className="flex flex-col items-center justify-center cursor-pointer group pointer-events-auto"
+        onClick={(e) => {
+          e.stopPropagation();
+          onClick();
+        }}
       >
         <div className="relative flex items-center justify-center w-16 h-16">
           <div className="absolute w-full h-full rounded-full border border-white/40 animate-ping" style={{ animationDuration: '2s' }}></div>

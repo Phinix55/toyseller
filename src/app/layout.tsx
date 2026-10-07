@@ -23,6 +23,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
+      <head>
+        <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
+        <style>{`
+          .font-pixel { font-family: 'Press Start 2P', cursive; }
+        `}</style>
+      </head>
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );
