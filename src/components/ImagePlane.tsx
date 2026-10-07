@@ -17,8 +17,16 @@ export function ImagePlane({ texturePath, zPosition }: { texturePath: string, zP
   // Maintain the natural aspect ratio of the image for the height
   const img = texture.image as any;
   const imageAspect = img ? img.width / img.height : 16 / 9;
-  const planeWidth = viewport.width;
-  const planeHeight = viewport.width / imageAspect;
+  const viewportAspect = viewport.width / viewport.height;
+  
+  let planeWidth = viewport.width;
+  let planeHeight = viewport.height;
+  
+  if (imageAspect > viewportAspect) {
+    planeWidth = viewport.height * imageAspect;
+  } else {
+    planeHeight = viewport.width / imageAspect;
+  }
 
   const uniforms = useRef({
     uTexture: { value: texture },

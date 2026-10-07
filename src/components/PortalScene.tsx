@@ -6,7 +6,7 @@ import { FlutedGlass } from "./FlutedGlass";
 import { ImagePlane } from "./ImagePlane";
 import { Hotspot } from "./Hotspot";
 
-export function PortalScene({ isPlaying }: { isPlaying: boolean }) {
+export function PortalScene({ isPlaying, isMobile }: { isPlaying: boolean, isMobile?: boolean }) {
   const { camera, viewport } = useThree();
   const router = useRouter();
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
@@ -21,8 +21,7 @@ export function PortalScene({ isPlaying }: { isPlaying: boolean }) {
     }
 
     const tl = gsap.timeline({ 
-      paused: true, 
-      onComplete: () => setShowHotspot(true) 
+      paused: true
     });
     
     // Each background is exactly 15 units deep.
@@ -32,7 +31,11 @@ export function PortalScene({ isPlaying }: { isPlaying: boolean }) {
     // Move continuously from bg1 straight to bg4 without stopping
     // The camera starts at z = 5. bg4 is at z = -45, so the camera stops at z = -40.
     // We use a single, smooth cinematic sweep.
-    tl.to(camera.position, { z: -40, duration: 8, ease: "power3.inOut" });
+    tl.to(camera.position, { z: -40, duration: 5, ease: "power3.inOut" });
+    
+    // Trigger the hotspot to appear slightly before the easing completely finishes.
+    // This prevents the user from waiting for the camera's micro-movements to stop.
+    tl.call(() => setShowHotspot(true), [], 4.2);
 
     timelineRef.current = tl;
 
@@ -77,10 +80,10 @@ export function PortalScene({ isPlaying }: { isPlaying: boolean }) {
 
   return (
     <>
-      <FlutedGlass isPlaying={isPlaying} />
-      <ImagePlane texturePath="/bg2.png" zPosition={-15} />
-      <ImagePlane texturePath="/bg3.png" zPosition={-30} />
-      <ImagePlane texturePath="/bg4.png" zPosition={-45} />
+      <FlutedGlass isPlaying={isPlaying} isMobile={isMobile} />
+      <ImagePlane texturePath={isMobile ? "/mobbg2.png" : "/bg2.png"} zPosition={-15} />
+      <ImagePlane texturePath={isMobile ? "/mobbg3.png" : "/bg3.png"} zPosition={-30} />
+      <ImagePlane texturePath={isMobile ? "/mobbg4.png" : "/bg4.png"} zPosition={-45} />
       
       {/* The interactive Hotspot appears when camera stops at bg4 */}
       {/* Positioned exactly over the video game held between the seller and boy */}

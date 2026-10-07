@@ -5,17 +5,25 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { useTexture } from "@react-three/drei";
 import * as THREE from "three";
 
-export function FlutedGlass({ isPlaying }: { isPlaying: boolean }) {
+export function FlutedGlass({ isPlaying, isMobile }: { isPlaying: boolean, isMobile?: boolean }) {
   const { viewport } = useThree();
-  const texture = useTexture("/bg1.png");
+  const texture = useTexture(isMobile ? "/mobbg1.png" : "/bg1.png");
   const materialRef = useRef<THREE.ShaderMaterial>(null);
   const meshRef = useRef<THREE.Mesh>(null);
 
   // Shader logic for fluted glass
   const img = texture.image as any;
   const imageAspect = img ? img.width / img.height : 16 / 9;
-  const planeWidth = viewport.width;
-  const planeHeight = viewport.width / imageAspect;
+  const viewportAspect = viewport.width / viewport.height;
+  
+  let planeWidth = viewport.width;
+  let planeHeight = viewport.height;
+  
+  if (imageAspect > viewportAspect) {
+    planeWidth = viewport.height * imageAspect;
+  } else {
+    planeHeight = viewport.width / imageAspect;
+  }
 
   const uniforms = {
     uTexture: { value: texture },
