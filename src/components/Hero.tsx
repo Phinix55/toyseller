@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
 import { PortalScene } from "./PortalScene";
 import { motion, AnimatePresence } from "framer-motion";
@@ -8,6 +8,77 @@ import { motion, AnimatePresence } from "framer-motion";
 export default function Hero() {
   const [isHindi, setIsHindi] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [heroBgm, setHeroBgm] = useState<HTMLAudioElement | null>(null);
+
+  // 1. Ambient Hero Music (Loops until transition)
+  useEffect(() => {
+    if ((window as any)._hasPlayedIntro) return; // Prevent blasting music if returning from the game
+    
+    let isMounted = true;
+    const audio = new Audio('/heromusic.m4a');
+    audio.loop = true;
+    audio.volume = 0.6;
+    
+    // Global reference so it can be explicitly killed by other routes
+    (window as any).heroBgm = audio;
+    
+    const playAttempt = () => {
+      if (!isMounted) return;
+      audio.play().catch(() => {
+        // If autoplay is blocked by the browser, wait for the first click anywhere
+        if (isMounted) {
+          document.addEventListener('click', playAttempt, { once: true });
+        }
+      });
+    };
+    playAttempt();
+    
+    setHeroBgm(audio);
+
+    return () => {
+      isMounted = false;
+      audio.pause();
+      audio.currentTime = 0;
+      document.removeEventListener('click', playAttempt);
+    };
+  }, []);
+
+  // 2. Tunnel Transition Sync
+  useEffect(() => {
+    let fadeInterval: NodeJS.Timeout;
+    
+    if (isPlaying && heroBgm) {
+      // Play the massive tunnel sweep effect when reaching bg2.png (~3.5s into the 8s sweep)
+      setTimeout(() => {
+        const tunnelSfx = new Audio('/tunneleffect.m4a');
+        tunnelSfx.volume = 0.8;
+        tunnelSfx.play().catch(e => console.warn(e));
+      }, 3500);
+      
+      // Fade out the hero ambient music precisely over the 8-second camera journey
+      const initialVol = heroBgm.volume;
+      const fadeSteps = 8000 / 50; // 50ms intervals over 8s
+      const step = initialVol / fadeSteps;
+      
+      fadeInterval = setInterval(() => {
+        try {
+          if (heroBgm.volume > step) {
+            heroBgm.volume -= step;
+          } else {
+            heroBgm.volume = 0;
+            heroBgm.pause();
+            clearInterval(fadeInterval);
+          }
+        } catch(e) {
+          clearInterval(fadeInterval);
+        }
+      }, 50);
+    }
+    
+    return () => {
+      if (fadeInterval) clearInterval(fadeInterval);
+    };
+  }, [isPlaying, heroBgm]);
 
   return (
     <div className="relative w-screen h-screen overflow-hidden bg-black">

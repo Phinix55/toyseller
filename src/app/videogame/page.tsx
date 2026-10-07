@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import RacingGame from "../../components/RacingGame";
@@ -8,6 +8,52 @@ import RacingGame from "../../components/RacingGame";
 export default function VideoGamePage() {
   const router = useRouter();
   const [screen, setScreen] = useState<'intro' | 'instructions' | 'gameplay'>('intro');
+  const audioCtxRef = useRef<AudioContext | null>(null);
+
+  useEffect(() => {
+    // Initialize AudioContext on mount (matches RacingGame.tsx logic exactly)
+    const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
+    if (AudioContext && !audioCtxRef.current) {
+      audioCtxRef.current = new AudioContext();
+    }
+
+    // Hard kill any lingering background music from the intro scene
+    const bgm = (window as any).heroBgm;
+    if (bgm) {
+      bgm.pause();
+      bgm.currentTime = 0;
+    }
+    // Flag so if user hits back button, the hero music doesn't blast again
+    (window as any)._hasPlayedIntro = true;
+  }, []);
+
+  const playTapSound = () => {
+    const ctx = audioCtxRef.current;
+    if (!ctx) return;
+    
+    try {
+      if (ctx.state === 'suspended') {
+        ctx.resume();
+      }
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      
+      osc.type = 'square';
+      osc.frequency.setValueAtTime(440, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.1);
+      
+      gain.gain.setValueAtTime(0.3, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+      
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      
+      osc.start();
+      osc.stop(ctx.currentTime + 0.1);
+    } catch (e) {
+      console.warn("Tap sound blocked", e);
+    }
+  };
 
   return (
     <main className="relative min-h-screen w-full bg-white overflow-hidden flex items-center justify-center">
@@ -42,7 +88,10 @@ export default function VideoGamePage() {
             {/* Transparent Interactive Screen Overlay (Sitting behind the device bezel) */}
             <div 
               className="absolute top-[10%] left-[30%] right-[30%] bottom-[62%] bg-[#8bac0f] hover:bg-[#9bbc0f] flex items-center justify-center cursor-pointer transition-all duration-300 z-0"
-              onClick={() => setScreen('instructions')}
+              onClick={() => {
+                playTapSound();
+                setScreen('instructions');
+              }}
             >
               <div className="flex flex-col items-center justify-center gap-2 w-full px-4 translate-y-3">
                 <p className="text-[#0f380f] font-pixel text-[8px] sm:text-[10px] text-center leading-relaxed tracking-widest opacity-80">
@@ -106,7 +155,10 @@ export default function VideoGamePage() {
                 {/* Tilted Digital Screen Overlay (Sitting behind the device bezel) */}
                 <div 
                   className="absolute top-[11%] left-[23%] w-[28%] h-[38%] bg-[#8bac0f] hover:bg-[#9bbc0f] flex items-center justify-center cursor-pointer -rotate-[13deg] transition-colors z-0"
-                  onClick={() => setScreen('gameplay')}
+                  onClick={() => {
+                    playTapSound();
+                    setScreen('gameplay');
+                  }}
                 >
                   <div className="flex flex-col items-center justify-center gap-3 -translate-x-6 -translate-y-8 lg:-translate-x-10 lg:-translate-y-14">
                     <p className="text-[#0f380f] font-pixel text-[8px] sm:text-[10px] text-center leading-relaxed tracking-widest opacity-80">
