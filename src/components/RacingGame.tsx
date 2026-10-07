@@ -108,6 +108,12 @@ export default function RacingGame() {
     const sfx = new SoundFX();
     sfx.init();
 
+    // Background Music
+    const bgm = new Audio('/viacheslavstarostin-action-drive-racing-music-429957.mp3');
+    bgm.loop = true;
+    bgm.volume = 0.2; // Keep it low so SFX remain crisp and audible
+    bgm.play().catch(e => console.warn('BGM autoplay blocked:', e));
+
     // Game variables
     let animationId: number;
     let frameCount = 0;
@@ -282,6 +288,7 @@ export default function RacingGame() {
         const playerY = 120;
         if (Math.abs(obs.x - playerX) < 12 && Math.abs(obs.y - playerY) < 16) {
           // Crash!
+          bgm.pause(); // Instantly kill the music
           setScore(currentScore);
           setGameOver(true);
           setIsPlaying(false);
@@ -311,6 +318,7 @@ export default function RacingGame() {
     animationId = requestAnimationFrame(loop);
 
     return () => {
+      bgm.pause(); // Cleanup audio on unmount
       cancelAnimationFrame(animationId);
       window.removeEventListener('keydown', handleKeyDown);
     };
