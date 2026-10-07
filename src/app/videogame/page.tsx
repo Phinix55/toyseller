@@ -8,6 +8,7 @@ import RacingGame from "../../components/RacingGame";
 export default function VideoGamePage() {
   const router = useRouter();
   const [screen, setScreen] = useState<'intro' | 'instructions' | 'gameplay'>('intro');
+  const [activeSheet, setActiveSheet] = useState<'about' | 'story' | null>(null);
   const audioCtxRef = useRef<AudioContext | null>(null);
 
   useEffect(() => {
@@ -79,12 +80,12 @@ export default function VideoGamePage() {
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             className="absolute inset-0 w-full h-full flex justify-center items-center pointer-events-none"
           >
-            {/* Left Side: About Toy */}
+            {/* Left Side: About Toy (Desktop Only) */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              className="absolute bottom-12 left-8 md:bottom-20 md:left-16 max-w-[420px] space-y-8 z-20 pointer-events-auto"
+              className="hidden md:block absolute bottom-12 left-8 md:bottom-20 md:left-16 max-w-[420px] space-y-8 z-20 pointer-events-auto"
             >
               <h2 className="text-4xl md:text-5xl font-black tracking-tighter text-black uppercase">
                 About Toy
@@ -110,12 +111,12 @@ export default function VideoGamePage() {
               </div>
             </motion.div>
 
-            {/* Right Side: The Story */}
+            {/* Right Side: The Story (Desktop Only) */}
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.9, ease: [0.22, 1, 0.36, 1] }}
-              className="absolute top-12 right-8 md:top-20 md:right-16 max-w-[380px] space-y-5 z-20 pointer-events-auto flex flex-col items-end"
+              className="hidden md:flex absolute top-12 right-8 md:top-20 md:right-16 max-w-[380px] space-y-5 z-20 pointer-events-auto flex-col items-end"
             >
               <h2 className="text-4xl md:text-5xl font-black tracking-tighter text-black uppercase">
                 The Story
@@ -130,12 +131,33 @@ export default function VideoGamePage() {
               </div>
             </motion.div>
 
+            {/* Mobile Bottom Buttons */}
+            <motion.div 
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 1.0 }}
+              className="md:hidden absolute bottom-6 left-0 right-0 px-4 z-20 pointer-events-auto flex gap-3"
+            >
+              <button 
+                onClick={() => setActiveSheet('about')}
+                className="flex-1 bg-black text-white font-black py-3.5 rounded-xl shadow-xl uppercase tracking-wider text-xs border-2 border-black active:scale-95 transition-transform"
+              >
+                About Toy
+              </button>
+              <button 
+                onClick={() => setActiveSheet('story')}
+                className="flex-1 bg-white text-black font-black py-3.5 rounded-xl shadow-xl uppercase tracking-wider text-xs border-2 border-black active:scale-95 transition-transform"
+              >
+                The Story
+              </button>
+            </motion.div>
+
             {/* Centered Gameboy */}
             <div className="relative w-full max-w-2xl mx-auto flex justify-center items-center p-8 md:p-16 pointer-events-auto">
               <img
                 src="/videogame.png"
                 alt="Vintage Video Game"
-                className="w-full h-auto object-contain drop-shadow-2xl relative z-10 pointer-events-none"
+                className="w-full h-auto max-h-[70vh] md:max-h-none object-contain drop-shadow-2xl relative z-10 pointer-events-none"
               />
 
               {/* Transparent Interactive Screen Overlay (Sitting behind the device bezel) */}
@@ -262,6 +284,74 @@ export default function VideoGamePage() {
               </div>
             </div>
           </motion.div>
+        )}
+      </AnimatePresence>
+      {/* Mobile Bottom Sheet Overlay */}
+      <AnimatePresence>
+        {activeSheet && (
+          <>
+            {/* Backdrop */}
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setActiveSheet(null)}
+              className="fixed inset-0 bg-black/60 z-[100] md:hidden backdrop-blur-sm"
+            />
+            
+            {/* Bottom Sheet */}
+            <motion.div 
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="fixed bottom-0 left-0 right-0 bg-white rounded-t-3xl z-[101] md:hidden p-8 pb-12 shadow-2xl overflow-y-auto max-h-[85vh] pointer-events-auto"
+            >
+              {/* Drag Handle */}
+              <div className="w-12 h-1.5 bg-black/20 rounded-full mx-auto mb-8" />
+              
+              {activeSheet === 'about' ? (
+                <div className="space-y-8">
+                  <h2 className="text-3xl font-black tracking-tighter text-black uppercase">
+                    About Toy
+                  </h2>
+                  <ul className="space-y-4 text-lg font-medium text-black/60 leading-relaxed">
+                    <li className="flex items-center gap-3">
+                      <span className="text-black text-2xl">🎮</span> 8-in-1 Classic Games
+                    </li>
+                    <li className="flex items-center gap-3">
+                      <span className="text-black text-2xl">🏁</span> Retro Racing & Block Puzzles
+                    </li>
+                    <li className="flex items-center gap-3">
+                      <span className="text-black text-2xl">🔋</span> Powered by 2x AA Batteries
+                    </li>
+                    <li className="flex items-center gap-3">
+                      <span className="text-black text-2xl">🕹️</span> Pure Monochrome LCD Magic
+                    </li>
+                  </ul>
+                  <div className="pt-4">
+                    <kbd className="w-full h-14 flex items-center justify-center bg-white border-4 border-black rounded-xl shadow-[0_6px_0_#1a1a1a] text-black font-black text-lg uppercase tracking-widest cursor-default">
+                      PRICE: ₹90
+                    </kbd>
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-6">
+                  <h2 className="text-3xl font-black tracking-tighter text-black uppercase">
+                    The Story
+                  </h2>
+                  <div className="space-y-4">
+                    <p className="text-lg font-medium text-black/60 leading-relaxed">
+                      I still remember buying this exact console right outside my school from the <span className="text-black font-bold italic">Khilone wale bhaiya</span> back in 2012.
+                    </p>
+                    <p className="text-lg font-medium text-black/60 leading-relaxed">
+                      It became my absolute favorite thing to play during the summer holidays. Back then, we didn't have the internet or mobile games, just pure, simple fun.
+                    </p>
+                  </div>
+                </div>
+              )}
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </main>

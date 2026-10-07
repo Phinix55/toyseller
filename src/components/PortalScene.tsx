@@ -89,11 +89,19 @@ export function PortalScene({ isPlaying, isMobile }: { isPlaying: boolean, isMob
       {/* Positioned exactly over the video game held between the seller and boy */}
       {showHotspot && (
         <Hotspot 
-          position={[
-            viewport.width * 0.05, 
-            -(viewport.width / (16/9)) * 0.12, 
-            -45.01
-          ]} 
+          position={
+            isMobile
+              ? [
+                  viewport.width * 0.22, // Right side
+                  -viewport.height * 0.14, // Downwards
+                  -45.01
+                ]
+              : [
+                  viewport.width * 0.05, 
+                  -(viewport.width / (16/9)) * 0.12, 
+                  -45.01
+                ]
+          }
           onClick={() => {
             playTapSound();
             // Slight delay so the audio has time to fire before unmount/route
