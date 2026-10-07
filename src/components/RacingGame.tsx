@@ -369,8 +369,12 @@ export default function RacingGame({ isMobile = false }: { isMobile?: boolean })
       {!isPlaying && !gameOver && (
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#8bac0f] z-10 p-4 text-center">
           <h2 className="font-pixel text-[#0f380f] text-sm md:text-xl mb-4 leading-relaxed">RACING<br/>CHAMPION</h2>
-          <p className="font-pixel text-[#0f380f] text-[8px] md:text-xs mb-8 opacity-70 leading-loose">
-            ARROWS TO MOVE<br/>SPACE TO SHOOT
+          <p className={`font-pixel text-[#0f380f] ${isMobile ? 'text-[6px]' : 'text-[8px] md:text-xs'} mb-8 opacity-70 leading-loose`}>
+            {isMobile ? (
+              <>SWIPE TO STEER<br/>DOUBLE TAP TO SHOOT</>
+            ) : (
+              <>ARROWS TO MOVE<br/>SPACE TO SHOOT</>
+            )}
           </p>
           <button 
             onClick={startGame}

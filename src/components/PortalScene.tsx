@@ -81,9 +81,9 @@ export function PortalScene({ isPlaying, isMobile }: { isPlaying: boolean, isMob
   return (
     <>
       <FlutedGlass isPlaying={isPlaying} isMobile={isMobile} />
-      <ImagePlane texturePath={isMobile ? "/mobbg2.png" : "/bg2.png"} zPosition={-15} />
-      <ImagePlane texturePath={isMobile ? "/mobbg3.png" : "/bg3.png"} zPosition={-30} />
-      <ImagePlane texturePath={isMobile ? "/mobbg4.png" : "/bg4.png"} zPosition={-45} />
+      <ImagePlane texturePath={isMobile ? "/mobbg2.avif" : "/bg2.avif"} zPosition={-15} />
+      <ImagePlane texturePath={isMobile ? "/mobbg3.avif" : "/bg3.avif"} zPosition={-30} />
+      <ImagePlane texturePath={isMobile ? "/mobbg4.avif" : "/bg4.avif"} zPosition={-45} />
       
       {/* The interactive Hotspot appears when camera stops at bg4 */}
       {/* Positioned exactly over the video game held between the seller and boy */}

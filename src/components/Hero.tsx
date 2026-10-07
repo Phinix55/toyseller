@@ -111,7 +111,7 @@ export default function Hero() {
                 {isHindi ? (
                   <motion.img
                     key="hindi"
-                    src="/Khilonewala.png"
+                    src="/Khilonewala.avif"
                     alt="Khilonewala"
                     initial={{ opacity: 0, filter: "blur(10px)", scale: 0.95 }}
                     animate={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
@@ -122,7 +122,7 @@ export default function Hero() {
                 ) : (
                   <motion.img
                     key="english"
-                    src="/toyseller.png"
+                    src="/toyseller.avif"
                     alt="Toy Seller"
                     initial={{ opacity: 0, filter: "blur(10px)", scale: 0.95 }}
                     animate={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
@@ -192,7 +192,7 @@ export default function Hero() {
                 {isHindi ? (
                   <motion.img
                     key="hindi-mob"
-                    src="/Khilonewala.png"
+                    src="/Khilonewala.avif"
                     alt="Khilonewala"
                     initial={{ opacity: 0, filter: "blur(10px)", scale: 0.95 }}
                     animate={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
@@ -203,7 +203,7 @@ export default function Hero() {
                 ) : (
                   <motion.img
                     key="english-mob"
-                    src="/toyseller.png"
+                    src="/toyseller.avif"
                     alt="Toy Seller"
                     initial={{ opacity: 0, filter: "blur(10px)", scale: 0.95 }}
                     animate={{ opacity: 1, filter: "blur(0px)", scale: 1 }}

@@ -155,7 +155,7 @@ export default function VideoGamePage() {
             {/* Centered Gameboy */}
             <div className="relative w-full max-w-2xl mx-auto flex justify-center items-center p-8 md:p-16 pointer-events-auto">
               <img
-                src="/videogame.png"
+                src="/videogame.avif"
                 alt="Vintage Video Game"
                 className="w-full h-auto max-h-[70vh] md:max-h-none object-contain drop-shadow-2xl relative z-10 pointer-events-none"
               />
@@ -251,7 +251,7 @@ export default function VideoGamePage() {
                 </div>
 
                 <img
-                  src="/bg6.png"
+                  src="/bg6.avif"
                   alt="Gameplay Preview"
                   className="w-full h-full object-cover drop-shadow-[0_20px_50px_rgba(0,0,0,0.2)] pointer-events-none relative z-10"
                 />
@@ -259,7 +259,7 @@ export default function VideoGamePage() {
 
               {/* MOBILE VISUAL */}
               <div className="md:hidden relative w-full h-full shrink-0 flex items-center justify-center overflow-hidden">
-                {/* Mobile Digital Screen Overlay perfectly sized for mobbg6.png */}
+                {/* Mobile Digital Screen Overlay perfectly sized for mobbg6.avif */}
                 <div
                   className="absolute top-[21.5%] left-[16%] w-[36%] h-[17.5%] bg-[#8bac0f] hover:bg-[#9bbc0f] flex items-center justify-center cursor-pointer -rotate-[8deg] transition-colors z-0"
                   onClick={() => {
@@ -280,7 +280,7 @@ export default function VideoGamePage() {
                 </div>
 
                 <img
-                  src="/mobbg6.png"
+                  src="/mobbg6.avif"
                   alt="Gameplay Preview Mobile"
                   className="w-full h-full object-cover pointer-events-none relative z-10"
                 />
@@ -316,7 +316,7 @@ export default function VideoGamePage() {
             {/* The Straight-On Gameplay Device Container (Desktop) */}
             <div className="hidden md:flex relative h-screen w-auto max-w-none aspect-[3/2] items-center justify-center">
               <img
-                src="/gameplay.png"
+                src="/gameplay.avif"
                 alt="Game Console"
                 className="w-full h-full object-cover pointer-events-none relative z-10"
               />
@@ -334,7 +334,7 @@ export default function VideoGamePage() {
             <div className="md:hidden absolute inset-0 overflow-hidden flex items-center justify-center bg-white">
               <div className="relative h-full aspect-[1024/1536] shrink-0">
                 <img
-                  src="/mobgameplay.png"
+                  src="/mobgameplay.avif"
                   alt="Game Console Mobile"
                   className="absolute inset-0 w-full h-full object-fill pointer-events-none z-10"
                 />
@@ -421,14 +421,17 @@ export default function VideoGamePage() {
                   <div className="space-y-6">
                     <div className="flex items-center gap-4">
                       <div className="flex gap-2">
-                        <kbd className="w-12 h-12 flex items-center justify-center bg-white border-2 border-black rounded-lg shadow-[0_4px_0_#1a1a1a] text-black font-black text-xl">←</kbd>
-                        <kbd className="w-12 h-12 flex items-center justify-center bg-white border-2 border-black rounded-lg shadow-[0_4px_0_#1a1a1a] text-black font-black text-xl">→</kbd>
+                        <kbd className="px-4 h-12 flex items-center justify-center bg-white border-2 border-black rounded-lg shadow-[0_4px_0_#1a1a1a] text-black font-black text-sm uppercase tracking-widest">
+                          <span className="mr-2 text-lg">↔</span> SWIPE
+                        </kbd>
                       </div>
                       <span className="text-black/80 font-bold tracking-wide text-base">STEER</span>
                     </div>
 
                     <div className="flex items-center gap-4">
-                      <kbd className="px-6 h-12 flex items-center justify-center bg-white border-2 border-black rounded-lg shadow-[0_4px_0_#1a1a1a] text-black font-black text-sm uppercase tracking-widest">SPACE</kbd>
+                      <kbd className="px-4 h-12 flex items-center justify-center bg-white border-2 border-black rounded-lg shadow-[0_4px_0_#1a1a1a] text-black font-black text-sm uppercase tracking-widest">
+                        DOUBLE TAP
+                      </kbd>
                       <span className="text-black/80 font-bold tracking-wide text-base">SHOOT (💀)</span>
                     </div>
                   </div>
