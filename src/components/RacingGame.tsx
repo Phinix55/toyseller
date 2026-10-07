@@ -81,7 +81,7 @@ class SoundFX {
   }
 }
 
-export default function RacingGame({ isMobile = false }: { isMobile?: boolean }) {
+export default function RacingGame({ isMobile = false, onExit }: { isMobile?: boolean, onExit?: () => void }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [gameOver, setGameOver] = useState(false);
@@ -376,12 +376,22 @@ export default function RacingGame({ isMobile = false }: { isMobile?: boolean })
               <>ARROWS TO MOVE<br/>SPACE TO SHOOT</>
             )}
           </p>
-          <button 
-            onClick={startGame}
-            className="font-pixel text-[#0f380f] text-xs md:text-sm animate-pulse border-2 border-[#0f380f] px-4 py-2 hover:bg-[#0f380f] hover:text-[#8bac0f] transition-colors"
-          >
-            PLAY
-          </button>
+          <div className="flex flex-col gap-3 w-full max-w-[120px] mx-auto">
+            <button 
+              onClick={startGame}
+              className="font-pixel text-[#0f380f] text-xs md:text-sm animate-pulse border-2 border-[#0f380f] px-4 py-2 hover:bg-[#0f380f] hover:text-[#8bac0f] transition-colors"
+            >
+              PLAY
+            </button>
+            {isMobile && onExit && (
+              <button 
+                onClick={onExit}
+                className="font-pixel text-[#0f380f] text-xs md:text-sm border-2 border-[#0f380f] px-4 py-2 hover:bg-[#0f380f] hover:text-[#8bac0f] transition-colors"
+              >
+                EXIT
+              </button>
+            )}
+          </div>
         </div>
       )}
       
@@ -389,12 +399,22 @@ export default function RacingGame({ isMobile = false }: { isMobile?: boolean })
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#8bac0f] z-10 p-4 text-center">
           <h2 className="font-pixel text-[#0f380f] text-sm md:text-xl mb-4">CRASHED!</h2>
           <p className="font-pixel text-[#0f380f] text-xs mb-8">SCORE: {score}</p>
-          <button 
-            onClick={startGame}
-            className="font-pixel text-[#0f380f] text-xs md:text-sm border-2 border-[#0f380f] px-4 py-2 hover:bg-[#0f380f] hover:text-[#8bac0f] transition-colors"
-          >
-            RETRY
-          </button>
+          <div className="flex flex-col gap-3 w-full max-w-[120px] mx-auto">
+            <button 
+              onClick={startGame}
+              className="font-pixel text-[#0f380f] text-xs md:text-sm border-2 border-[#0f380f] px-4 py-2 hover:bg-[#0f380f] hover:text-[#8bac0f] transition-colors"
+            >
+              RETRY
+            </button>
+            {isMobile && onExit && (
+              <button 
+                onClick={onExit}
+                className="font-pixel text-[#0f380f] text-xs md:text-sm border-2 border-[#0f380f] px-4 py-2 hover:bg-[#0f380f] hover:text-[#8bac0f] transition-colors"
+              >
+                EXIT
+              </button>
+            )}
+          </div>
         </div>
       )}
 

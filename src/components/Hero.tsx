@@ -4,14 +4,13 @@ import { useState, useEffect, Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
 import { PortalScene } from "./PortalScene";
 import { motion, AnimatePresence } from "framer-motion";
-import { Loader } from "@react-three/drei";
 
 export default function Hero() {
   const [isHindi, setIsHindi] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [mounted, setMounted] = useState(false);
-
+  const [showBackButton, setShowBackButton] = useState(false);
 
 
   // Tunnel Transition Sync & Mobile Detection
@@ -31,6 +30,7 @@ export default function Hero() {
     }
 
     let timeoutId: NodeJS.Timeout;
+    let buttonTimeoutId: NodeJS.Timeout;
     let tunnelSfx: HTMLAudioElement | null = null;
     
     if (isPlaying) {
@@ -42,11 +42,18 @@ export default function Hero() {
         tunnelSfx.volume = 0.8;
         tunnelSfx.play().catch(e => console.warn(e));
       }, 2000);
+
+      buttonTimeoutId = setTimeout(() => {
+        setShowBackButton(true);
+      }, 4200);
+    } else {
+      setShowBackButton(false);
     }
     
     return () => {
       window.removeEventListener('resize', checkMobile);
       if (timeoutId) clearTimeout(timeoutId);
+      if (buttonTimeoutId) clearTimeout(buttonTimeoutId);
       if (tunnelSfx) {
         try {
           tunnelSfx.pause();
@@ -63,7 +70,7 @@ export default function Hero() {
   }, [isPlaying]);
 
   return (
-    <div className="relative w-screen h-[100dvh] overflow-hidden bg-black">
+    <div className="relative w-screen h-[100dvh] overflow-hidden bg-[#3186DD]">
       {/* 3D WebGL Background Layer */}
       <div className="absolute inset-0 z-0 pointer-events-auto">
         <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
@@ -71,19 +78,13 @@ export default function Hero() {
             <PortalScene isPlaying={isPlaying} isMobile={isMobile} />
           </Suspense>
         </Canvas>
-        <Loader
-          containerStyles={{ background: '#000', zIndex: 100 }}
-          innerStyles={{ width: '250px', background: 'rgba(255,255,255,0.1)', height: '4px' }}
-          barStyles={{ background: '#fff', height: '4px' }}
-          dataInterpolation={(p) => `INITIALIZING ${p.toFixed(0)}%`}
-        />
       </div>
 
       {/* Dark Overlay for Text Legibility */}
       <motion.div 
         animate={{ opacity: isPlaying ? 0 : 1 }}
         transition={{ duration: 1.5 }}
-        className="absolute inset-0 z-[5] bg-black/40 pointer-events-none" 
+        className="absolute inset-0 z-[5] bg-black/30 pointer-events-none" 
       />
 
       {/* 2D UI Overlay Layer */}
@@ -154,21 +155,12 @@ export default function Hero() {
           </div>
 
           {/* Bottom CTA */}
-          <div className="w-full flex justify-center pb-8 pointer-events-auto">
+          <div className="w-full flex justify-center pb-16 lg:pb-20 pointer-events-auto">
             <button 
               onClick={() => setIsPlaying(true)}
-              className="group flex flex-col items-center gap-3"
+              className="bg-black text-white px-8 py-3.5 rounded-full text-xs font-semibold tracking-[0.2em] uppercase hover:bg-white hover:text-black hover:scale-105 active:scale-95 transition-all duration-300 shadow-2xl border border-white/10"
             >
-              <span className="text-white/60 text-sm tracking-[0.3em] uppercase group-hover:text-white transition-colors duration-500">
-                Tap to enter
-              </span>
-              <div className="w-[1px] h-12 bg-white/30 group-hover:bg-white group-hover:h-16 transition-all duration-500 ease-out relative overflow-hidden">
-                <motion.div
-                  className="absolute top-0 w-full h-1/2 bg-white"
-                  animate={{ y: ["-100%", "200%"] }}
-                  transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
-                />
-              </div>
+              Tap to enter
             </button>
           </div>
         </div>
@@ -235,25 +227,31 @@ export default function Hero() {
           </div>
 
           {/* Bottom CTA */}
-          <div className="w-full flex justify-center pb-6 pointer-events-auto">
+          <div className="w-full flex justify-center pb-[calc(3rem+env(safe-area-inset-bottom))] pointer-events-auto">
             <button 
               onClick={() => setIsPlaying(true)}
-              className="group flex flex-col items-center gap-2"
+              className="bg-black text-white px-6 py-3 rounded-full text-[10px] font-semibold tracking-[0.2em] uppercase active:scale-95 transition-transform duration-300 shadow-xl border border-white/10"
             >
-              <span className="text-white/80 text-xs tracking-[0.25em] uppercase transition-colors duration-500">
-                Tap to enter
-              </span>
-              <div className="w-[1px] h-10 bg-white/40 relative overflow-hidden">
-                <motion.div
-                  className="absolute top-0 w-full h-1/2 bg-white"
-                  animate={{ y: ["-100%", "200%"] }}
-                  transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
-                />
-              </div>
+              Tap to enter
             </button>
           </div>
         </div>
       </motion.div>
+
+      {/* Back Button for bg4 screen */}
+      <AnimatePresence>
+        {showBackButton && (
+          <motion.button
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            onClick={() => window.location.reload()}
+            className="absolute top-8 left-8 bg-white text-black px-4 py-2 rounded-xl font-bold text-sm flex items-center gap-2 z-[100] shadow-xl border-2 border-white hover:scale-105 active:scale-95 transition-all pointer-events-auto"
+          >
+            <span>←</span> Back to Home
+          </motion.button>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

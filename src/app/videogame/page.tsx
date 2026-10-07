@@ -65,9 +65,13 @@ export default function VideoGamePage() {
           else if (screen === 'instructions') setScreen('intro');
           else router.push('/');
         }}
-        className="absolute top-8 left-8 text-black/60 hover:text-black transition-colors font-medium text-sm flex items-center gap-2 z-50"
+        className={`absolute top-8 left-8 bg-black text-white px-4 py-2 rounded-xl font-medium text-sm items-center gap-2 z-50 shadow-xl border-2 border-black hover:scale-105 active:scale-95 transition-all ${screen === 'gameplay' ? 'hidden md:flex' : 'flex'}`}
       >
-        <span>←</span> {screen === 'instructions' ? "Back to Gameboy" : "Back to Story"}
+        <span>←</span> {
+          screen === 'gameplay' ? "Exit Game" : 
+          screen === 'instructions' ? "Back to Toy" : 
+          "Back to Story"
+        }
       </button>
 
       <AnimatePresence mode="wait">
@@ -326,7 +330,7 @@ export default function VideoGamePage() {
               <div
                 className="absolute top-[18%] left-[30%] w-[39.5%] h-[75%] z-0 overflow-hidden"
               >
-                <RacingGame />
+                <RacingGame onExit={() => setScreen('instructions')} />
               </div>
             </div>
 
@@ -343,7 +347,7 @@ export default function VideoGamePage() {
                 <div
                   className="absolute top-[15.5%] left-[25%] w-[50%] h-[71%] z-0 overflow-hidden flex items-stretch justify-stretch"
                 >
-                  <RacingGame isMobile={true} />
+                  <RacingGame isMobile={true} onExit={() => setScreen('instructions')} />
                 </div>
               </div>
             </div>
