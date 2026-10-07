@@ -3,17 +3,19 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
+import RacingGame from "../../components/RacingGame";
 
 export default function VideoGamePage() {
   const router = useRouter();
-  const [screen, setScreen] = useState<'intro' | 'instructions'>('intro');
+  const [screen, setScreen] = useState<'intro' | 'instructions' | 'gameplay'>('intro');
 
   return (
     <main className="relative min-h-screen w-full bg-white overflow-hidden flex items-center justify-center">
       {/* Back Button */}
       <button 
         onClick={() => {
-          if (screen === 'instructions') setScreen('intro');
+          if (screen === 'gameplay') setScreen('instructions');
+          else if (screen === 'instructions') setScreen('intro');
           else router.push('/');
         }}
         className="absolute top-8 left-8 text-black/60 hover:text-black transition-colors font-medium text-sm flex items-center gap-2 z-50"
@@ -73,7 +75,7 @@ export default function VideoGamePage() {
                 {/* Tilted Digital Screen Overlay (Sitting behind the device bezel) */}
                 <div 
                   className="absolute top-[11%] left-[23%] w-[28%] h-[38%] bg-[#8bac0f] hover:bg-[#9bbc0f] flex items-center justify-center cursor-pointer -rotate-[13deg] transition-colors z-0"
-                  onClick={() => console.log("Start Game Clicked!")}
+                  onClick={() => setScreen('gameplay')}
                 >
                   <p className="text-[#0f380f] font-pixel text-sm sm:text-base md:text-xl animate-pulse text-center leading-relaxed tracking-wider -translate-x-4 -translate-y-6 lg:-translate-x-6 lg:-translate-y-10">
                     START<br/>GAME
@@ -85,6 +87,34 @@ export default function VideoGamePage() {
                   alt="Gameplay Preview" 
                   className="w-full h-full object-cover drop-shadow-[0_20px_50px_rgba(0,0,0,0.2)] pointer-events-none relative z-10"
                 />
+              </div>
+            </div>
+          </motion.div>
+        )}
+
+        {screen === 'gameplay' && (
+          <motion.div 
+            key="gameplay"
+            initial={{ opacity: 0, scale: 0.95, y: 50 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: -50 }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            className="absolute inset-0 flex items-center justify-center w-full h-full bg-white z-40"
+          >
+            {/* The Straight-On Gameplay Device Container */}
+            <div className="relative h-screen w-auto max-w-none aspect-[3/2] flex items-center justify-center">
+              <img 
+                src="/gameplay.png" 
+                alt="Game Console" 
+                className="w-full h-full object-cover pointer-events-none relative z-10"
+              />
+              
+              {/* The Actual Game Canvas Mask */}
+              {/* Using generous bleed percentages to hide perfectly behind the opaque red plastic */}
+              <div 
+                className="absolute top-[18%] left-[30%] w-[39.5%] h-[75%] z-0 overflow-hidden"
+              >
+                <RacingGame />
               </div>
             </div>
           </motion.div>
