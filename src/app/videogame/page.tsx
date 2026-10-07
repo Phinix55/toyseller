@@ -82,15 +82,15 @@ export default function VideoGamePage() {
                 <div className="space-y-4">
                   <div className="flex items-center gap-4">
                     <div className="flex gap-2">
-                      <kbd className="w-10 h-10 flex items-center justify-center bg-white border-2 border-gray-200 rounded-lg shadow-[0_4px_0_#e5e7eb] text-gray-700 font-black text-lg">←</kbd>
-                      <kbd className="w-10 h-10 flex items-center justify-center bg-white border-2 border-gray-200 rounded-lg shadow-[0_4px_0_#e5e7eb] text-gray-700 font-black text-lg">→</kbd>
+                      <kbd className="w-10 h-10 flex items-center justify-center bg-white border-2 border-black rounded-lg shadow-[0_4px_0_#1a1a1a] text-black font-black text-lg">←</kbd>
+                      <kbd className="w-10 h-10 flex items-center justify-center bg-white border-2 border-black rounded-lg shadow-[0_4px_0_#1a1a1a] text-black font-black text-lg">→</kbd>
                     </div>
-                    <span className="text-black/60 font-semibold tracking-wide text-sm">STEER</span>
+                    <span className="text-black/80 font-bold tracking-wide text-sm">STEER</span>
                   </div>
 
                   <div className="flex items-center gap-4">
-                    <kbd className="w-22 px-4 h-10 flex items-center justify-center bg-white border-2 border-gray-200 rounded-lg shadow-[0_4px_0_#e5e7eb] text-gray-700 font-black text-xs uppercase tracking-widest">SPACE</kbd>
-                    <span className="text-black/60 font-semibold tracking-wide text-sm">SHOOT TARGET (💀)</span>
+                    <kbd className="w-22 px-4 h-10 flex items-center justify-center bg-white border-2 border-black rounded-lg shadow-[0_4px_0_#1a1a1a] text-black font-black text-xs uppercase tracking-widest">SPACE</kbd>
+                    <span className="text-black/80 font-bold tracking-wide text-sm">SHOOT TARGET (💀)</span>
                   </div>
                 </div>
 
