@@ -124,8 +124,9 @@ export default function RacingGame() {
     let lasers: Laser[] = [];
     
     let speed = 1.5;
-    let isRoundEvent = false;
-    let roundEventTimer = 0;
+    let spawnTimer = 0;
+    let spawnRate = 60;
+    let lastShotFrame = -50; // Initialized to allow immediate shooting
 
     // Controls
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -140,9 +141,12 @@ export default function RacingGame() {
           sfx.playBlip();
         }
       } else if (e.key === ' ' || e.key === 'Spacebar') {
-        // Fire laser
-        lasers.push({ x: lanes[playerLane], y: 120, active: true });
-        sfx.playLaser();
+        // Fire laser with cooldown (only 1 shot every 15 frames)
+        if (frameCount - lastShotFrame > 15) {
+          lasers.push({ x: lanes[playerLane], y: 120, active: true });
+          sfx.playLaser();
+          lastShotFrame = frameCount;
+        }
       }
     };
     
@@ -160,10 +164,14 @@ export default function RacingGame() {
     };
 
     const drawRoundObstacle = (x: number, y: number) => {
-      ctx.fillStyle = '#0f380f';
-      ctx.beginPath();
-      ctx.arc(x, y, 8, 0, Math.PI * 2);
-      ctx.fill();
+      ctx.font = '14px monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('💀', x, y);
+      
+      // Reset alignment for other drawing operations like HUD
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'alphabetic';
     };
 
     const drawLaser = (x: number, y: number) => {
@@ -179,10 +187,9 @@ export default function RacingGame() {
       ctx.fillStyle = '#8bac0f';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Score
+      // Score increment (time-based survival)
       if (frameCount % 10 === 0) {
         currentScore += 1;
-        speed += 0.001; // slowly increase speed
       }
 
       // Draw road markings (scrolling)
@@ -193,24 +200,43 @@ export default function RacingGame() {
         ctx.fillRect(105, i + offset, 2, 10);
       }
 
-      // Manage Event State
-      if (!isRoundEvent && Math.random() < 0.002) {
-        isRoundEvent = true;
-        roundEventTimer = 0;
-        // Spawn a round obstacle at top
-        obstacles.push({ x: lanes[1], y: -20, type: 'round', active: true });
-      }
+      // Difficulty Scaling
+      speed = Math.min(3.5, 1.5 + currentScore / 500);
+      spawnRate = Math.max(25, 60 - Math.floor(currentScore / 25));
 
-      if (isRoundEvent) {
-        roundEventTimer++;
-        if (roundEventTimer > 300) { // Event ends after 300 frames if not resolved
-          isRoundEvent = false;
-        }
-      } else {
-        // Spawn standard obstacles
-        if (frameCount % 60 === 0) {
-          const lane = Math.floor(Math.random() * 3);
-          obstacles.push({ x: lanes[lane], y: -20, type: 'car', active: true });
+      // Wave Spawner
+      spawnTimer++;
+      if (spawnTimer >= spawnRate) {
+        spawnTimer = 0;
+        
+        // Pick a random wave pattern
+        const pattern = Math.floor(Math.random() * 4); // 0, 1, 2, 3
+        
+        if (pattern === 0) {
+          // Wave A: Single Car
+          const l = Math.floor(Math.random() * 3);
+          obstacles.push({ x: lanes[l], y: -20, type: 'car', active: true });
+        } else if (pattern === 1) {
+          // Wave B: Two Cars (The Pinch)
+          // Always leaves exactly 1 lane completely empty
+          const emptyLane = Math.floor(Math.random() * 3);
+          if (emptyLane !== 0) obstacles.push({ x: lanes[0], y: -20, type: 'car', active: true });
+          if (emptyLane !== 1) obstacles.push({ x: lanes[1], y: -20, type: 'car', active: true });
+          if (emptyLane !== 2) obstacles.push({ x: lanes[2], y: -20, type: 'car', active: true });
+        } else if (pattern === 2) {
+          // Wave C: The Targeted Shootout
+          // 1. Round target ALWAYS spawns in the player's current lane
+          obstacles.push({ x: lanes[playerLane], y: -20, type: 'round', active: true });
+          
+          // 2. Add exactly ONE indestructible car in another lane
+          // This guarantees the third lane remains totally empty
+          const otherLanes = [0, 1, 2].filter(l => l !== playerLane);
+          const carLane = otherLanes[Math.floor(Math.random() * 2)];
+          obstacles.push({ x: lanes[carLane], y: -20, type: 'car', active: true });
+        } else {
+          // Wave D: Simple Target
+          // Just one round target, ALWAYS in the player's current lane
+          obstacles.push({ x: lanes[playerLane], y: -20, type: 'round', active: true });
         }
       }
 
@@ -236,17 +262,20 @@ export default function RacingGame() {
         }
 
         // Collision with Lasers
-        if (obs.type === 'round') {
-          lasers.forEach(laser => {
-            if (laser.active && Math.abs(laser.x - obs.x) < 10 && Math.abs(laser.y - obs.y) < 10) {
-              laser.active = false;
+        lasers.forEach(laser => {
+          if (laser.active && Math.abs(laser.x - obs.x) < 12 && Math.abs(laser.y - obs.y) < 12) {
+            laser.active = false; // Laser always dies on hit
+            
+            if (obs.type === 'round') {
+              // Destroyed the target block!
               obs.active = false;
               sfx.playExplosion();
-              currentScore += 100;
-              isRoundEvent = false; // Event cleared
+              currentScore += 50; // Bonus points
+            } else {
+              // Hit indestructible car (Laser fizzles out harmlessly)
             }
-          });
-        }
+          }
+        });
 
         // Collision with Player
         const playerX = lanes[playerLane];
