@@ -7,7 +7,7 @@ import * as THREE from "three";
 
 export function FlutedGlass({ isPlaying, isMobile }: { isPlaying: boolean, isMobile?: boolean }) {
   const { viewport } = useThree();
-  const texture = useTexture(isMobile ? "/mobbg1.avif" : "/bg1.avif");
+  const texture = useTexture(isMobile ? "/assets/mobile/mobbg1.avif" : "/assets/desktop/bg1.avif");
   const materialRef = useRef<THREE.ShaderMaterial>(null);
   const meshRef = useRef<THREE.Mesh>(null);
 

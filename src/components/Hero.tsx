@@ -37,7 +37,7 @@ export default function Hero() {
       // The camera sweep is 5s long. bg2 is at z=-15.
       // With power3.inOut easing, the camera passes bg1 and reaches bg2 around 2 seconds in.
       timeoutId = setTimeout(() => {
-        tunnelSfx = new Audio('/tunneleffect.m4a');
+        tunnelSfx = new Audio('/assets/music/tunneleffect.m4a');
         (window as any)._tunnelSfxGlobal = tunnelSfx;
         tunnelSfx.volume = 0.8;
         tunnelSfx.play().catch(e => console.warn(e));
@@ -119,7 +119,7 @@ export default function Hero() {
                 {isHindi ? (
                   <motion.img
                     key="hindi"
-                    src="/Khilonewala.avif"
+                    src="/assets/desktop/Khilonewala.avif"
                     alt="Khilonewala"
                     initial={{ opacity: 0, filter: "blur(10px)", scale: 0.95 }}
                     animate={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
@@ -130,7 +130,7 @@ export default function Hero() {
                 ) : (
                   <motion.img
                     key="english"
-                    src="/toyseller.avif"
+                    src="/assets/desktop/toyseller.avif"
                     alt="Toy Seller"
                     initial={{ opacity: 0, filter: "blur(10px)", scale: 0.95 }}
                     animate={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
@@ -191,7 +191,7 @@ export default function Hero() {
                 {isHindi ? (
                   <motion.img
                     key="hindi-mob"
-                    src="/Khilonewala.avif"
+                    src="/assets/desktop/Khilonewala.avif"
                     alt="Khilonewala"
                     initial={{ opacity: 0, filter: "blur(10px)", scale: 0.95 }}
                     animate={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
@@ -202,7 +202,7 @@ export default function Hero() {
                 ) : (
                   <motion.img
                     key="english-mob"
-                    src="/toyseller.avif"
+                    src="/assets/desktop/toyseller.avif"
                     alt="Toy Seller"
                     initial={{ opacity: 0, filter: "blur(10px)", scale: 0.95 }}
                     animate={{ opacity: 1, filter: "blur(0px)", scale: 1 }}

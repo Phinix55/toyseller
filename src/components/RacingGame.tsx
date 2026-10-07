@@ -111,7 +111,7 @@ export default function RacingGame({ isMobile = false, onExit }: { isMobile?: bo
     sfx.init();
 
     // Background Music
-    const bgm = new Audio('/viacheslavstarostin-action-drive-racing-music-429957.mp3');
+    const bgm = new Audio('/assets/music/viacheslavstarostin-action-drive-racing-music-429957.mp3');
     bgm.loop = true;
     bgm.volume = 0.2; // Keep it low so SFX remain crisp and audible
     bgm.play().catch(e => console.warn('BGM autoplay blocked:', e));

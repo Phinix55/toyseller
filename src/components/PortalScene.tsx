@@ -5,21 +5,16 @@ import { useRouter } from "next/navigation";
 import { FlutedGlass } from "./FlutedGlass";
 import { ImagePlane } from "./ImagePlane";
 import { Hotspot } from "./Hotspot";
+import { useAudio } from "../hooks/useAudio";
 
 export function PortalScene({ isPlaying, isMobile }: { isPlaying: boolean, isMobile?: boolean }) {
   const { camera, viewport } = useThree();
   const router = useRouter();
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
   const [showHotspot, setShowHotspot] = useState(false);
-  const audioCtxRef = useRef<AudioContext | null>(null);
+  const { playTapSound } = useAudio();
 
   useEffect(() => {
-    // Initialize AudioContext on mount (matches RacingGame.tsx logic exactly)
-    const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
-    if (AudioContext && !audioCtxRef.current) {
-      audioCtxRef.current = new AudioContext();
-    }
-
     const tl = gsap.timeline({ 
       paused: true
     });
@@ -44,33 +39,6 @@ export function PortalScene({ isPlaying, isMobile }: { isPlaying: boolean, isMob
     };
   }, [camera]);
 
-  const playTapSound = () => {
-    const ctx = audioCtxRef.current;
-    if (!ctx) return;
-    
-    try {
-      if (ctx.state === 'suspended') {
-        ctx.resume();
-      }
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      
-      osc.type = 'square';
-      osc.frequency.setValueAtTime(440, ctx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.1);
-      
-      gain.gain.setValueAtTime(0.3, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
-      
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      
-      osc.start();
-      osc.stop(ctx.currentTime + 0.1);
-    } catch (e) {
-      console.warn("Tap sound blocked", e);
-    }
-  };
 
   useEffect(() => {
     if (isPlaying && timelineRef.current) {
@@ -81,9 +49,9 @@ export function PortalScene({ isPlaying, isMobile }: { isPlaying: boolean, isMob
   return (
     <>
       <FlutedGlass isPlaying={isPlaying} isMobile={isMobile} />
-      <ImagePlane texturePath={isMobile ? "/mobbg2.avif" : "/bg2.avif"} zPosition={-15} />
-      <ImagePlane texturePath={isMobile ? "/mobbg3.avif" : "/bg3.avif"} zPosition={-30} />
-      <ImagePlane texturePath={isMobile ? "/mobbg4.avif" : "/bg4.avif"} zPosition={-45} />
+      <ImagePlane texturePath={isMobile ? "/assets/mobile/mobbg2.avif" : "/assets/desktop/bg2.avif"} zPosition={-15} />
+      <ImagePlane texturePath={isMobile ? "/assets/mobile/mobbg3.avif" : "/assets/desktop/bg3.avif"} zPosition={-30} />
+      <ImagePlane texturePath={isMobile ? "/assets/mobile/mobbg4.avif" : "/assets/desktop/bg4.avif"} zPosition={-45} />
       
       {/* The interactive Hotspot appears when camera stops at bg4 */}
       {/* Positioned exactly over the video game held between the seller and boy */}
