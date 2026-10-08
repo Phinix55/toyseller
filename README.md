@@ -162,7 +162,8 @@ We welcome contributions! Please adhere to the following guidelines:
 
 ## 📄 License & Contact
 
-This project is open-source and available under the [MIT License](LICENSE).
+**© All Rights Reserved.**
+This project is proprietary and not open-source. All copyrights are reserved by Pratik Gulabdhar Pandey.
 
 *   **Live Demo:** [toy.pratikpandey.in](https://toy.pratikpandey.in/)
 *   **Primary Domain:** [toyseller.vercel.app](https://toyseller.vercel.app)
