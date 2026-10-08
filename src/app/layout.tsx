@@ -26,12 +26,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <head>
         {/* CRITICAL LCP PRELOADS ONLY */}
         <link rel="preload" as="image" href="/assets/desktop/Khilonewala.avif" type="image/avif" />
+        <link rel="preload" as="image" href="/assets/desktop/videogame.avif" type="image/avif" />
         
         {/* Desktop LCP */}
-        <link rel="preload" as="image" href="/assets/desktop/bg1.avif" type="image/avif" media="(min-width: 768px)" />
+        <link rel="preload" as="image" href="/assets/desktop/bg1.avif" type="image/avif" media="(min-width: 768px)" crossOrigin="anonymous" />
         
         {/* Mobile LCP */}
-        <link rel="preload" as="image" href="/assets/mobile/mobbg1.avif" type="image/avif" media="(max-width: 767px)" />
+        <link rel="preload" as="image" href="/assets/mobile/mobbg1.avif" type="image/avif" media="(max-width: 767px)" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
         <style>{`
           .font-pixel { font-family: 'Press Start 2P', cursive; }

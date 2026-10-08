@@ -45,10 +45,10 @@ export function GameInstructionsContent({ setActiveSheet, onPlay }: GameInstruct
       <div className="flex w-full lg:w-[60%] h-full items-center justify-end relative z-0">
         
         {/* DESKTOP VISUAL */}
-        <div className="hidden md:block relative h-full aspect-[3/2] shrink-0">
+        <div className="hidden md:block relative h-full aspect-[3/2] shrink-0 contain-content">
           {/* Tilted Digital Screen Overlay */}
           <div
-            className="absolute top-[11%] left-[23%] w-[28%] h-[38%] bg-[#8bac0f] hover:bg-[#9bbc0f] flex items-center justify-center cursor-pointer -rotate-[13deg] transition-colors z-0"
+            className="absolute top-[11%] left-[23%] w-[28%] h-[38%] bg-[#8bac0f] hover:bg-[#9bbc0f] flex items-center justify-center cursor-pointer -rotate-[13deg] transition-all duration-300 z-0 will-change-transform"
             onClick={onPlay}
           >
             <div className="flex flex-col items-center justify-center gap-3 -translate-x-6 -translate-y-8 lg:-translate-x-10 lg:-translate-y-14">
@@ -71,10 +71,10 @@ export function GameInstructionsContent({ setActiveSheet, onPlay }: GameInstruct
         </div>
 
         {/* MOBILE VISUAL */}
-        <div className="md:hidden relative w-full h-full shrink-0 flex items-center justify-center overflow-hidden">
+        <div className="md:hidden relative w-full h-full shrink-0 flex items-center justify-center overflow-hidden contain-content">
           {/* Mobile Digital Screen Overlay perfectly sized for mobbg6.avif */}
           <div
-            className="absolute top-[21.5%] left-[16%] w-[36%] h-[17.5%] bg-[#8bac0f] hover:bg-[#9bbc0f] flex items-center justify-center cursor-pointer -rotate-[8deg] transition-colors z-0"
+            className="absolute top-[21.5%] left-[16%] w-[36%] h-[17.5%] bg-[#8bac0f] hover:bg-[#9bbc0f] flex items-center justify-center cursor-pointer -rotate-[8deg] transition-all duration-300 z-0 will-change-transform"
             onClick={onPlay}
           >
             <div className="flex flex-col items-center justify-center gap-1.5 translate-y-2">

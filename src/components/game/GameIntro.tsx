@@ -81,7 +81,7 @@ export function GameIntroContent({ setActiveSheet, onPlay }: GameIntroProps) {
       </motion.div>
 
       {/* Centered Gameboy */}
-      <div className="relative w-full max-w-2xl mx-auto flex justify-center items-center p-8 md:p-16 pointer-events-auto">
+      <div className="relative w-full max-w-2xl mx-auto flex justify-center items-center p-8 md:p-16 pointer-events-auto contain-content">
         <img
           src="/assets/desktop/videogame.avif"
           alt="Vintage Video Game"
@@ -90,7 +90,7 @@ export function GameIntroContent({ setActiveSheet, onPlay }: GameIntroProps) {
 
         {/* Transparent Interactive Screen Overlay (Sitting behind the device bezel) */}
         <div
-          className="absolute top-[10%] left-[30%] right-[30%] bottom-[62%] bg-[#8bac0f] hover:bg-[#9bbc0f] flex items-center justify-center cursor-pointer transition-all duration-300 z-0"
+          className="absolute top-[10%] left-[30%] right-[30%] bottom-[62%] bg-[#8bac0f] hover:bg-[#9bbc0f] flex items-center justify-center cursor-pointer transition-all duration-300 z-0 will-change-transform"
           onClick={onPlay}
         >
           <div className="flex flex-col items-center justify-center gap-2 w-full px-4 translate-y-3">

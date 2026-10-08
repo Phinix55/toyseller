@@ -26,6 +26,27 @@ export default function VideoGamePage() {
     (window as any)._hasPlayedIntro = true;
   }, []);
 
+  // Background Cache Preloader
+  useEffect(() => {
+    if (screen === 'intro') {
+      const timer = setTimeout(() => {
+        // Silently pull all downstream heavy images into the browser cache
+        const imagesToPreload = [
+          "/assets/desktop/bg6.avif",
+          "/assets/mobile/mobbg6.avif",
+          "/assets/desktop/gameplay.avif",
+          "/assets/mobile/mobgameplay.avif"
+        ];
+        imagesToPreload.forEach(src => {
+          const img = new Image();
+          img.src = src;
+        });
+      }, 1000); // Wait 1 second for entry animations to finish before using network
+
+      return () => clearTimeout(timer);
+    }
+  }, [screen]);
+
   return (
     <main className="relative min-h-[100dvh] w-full bg-white overflow-hidden flex items-center justify-center">
       {/* Back Button */}
@@ -87,7 +108,7 @@ export default function VideoGamePage() {
             className="absolute inset-0 flex items-center justify-center w-full h-full bg-white z-40"
           >
             {/* The Straight-On Gameplay Device Container (Desktop) */}
-            <div className="hidden md:flex relative h-[100dvh] w-auto max-w-none aspect-[3/2] items-center justify-center">
+            <div className="hidden md:flex relative h-[100dvh] w-auto max-w-none aspect-[3/2] items-center justify-center contain-content">
               <img
                 src="/assets/desktop/gameplay.avif"
                 alt="Game Console"
@@ -97,14 +118,14 @@ export default function VideoGamePage() {
               {/* The Actual Game Canvas Mask */}
               {/* Using generous bleed percentages to hide perfectly behind the opaque red plastic */}
               <div
-                className="absolute top-[18%] left-[30%] w-[39.5%] h-[75%] z-0 overflow-hidden"
+                className="absolute top-[18%] left-[30%] w-[39.5%] h-[75%] z-0 overflow-hidden transition-all duration-300 will-change-transform"
               >
                 <RacingGame onExit={() => setScreen('instructions')} />
               </div>
             </div>
 
             {/* Mobile Gameplay Container */}
-            <div className="md:hidden absolute inset-0 overflow-hidden flex items-center justify-center bg-white">
+            <div className="md:hidden absolute inset-0 overflow-hidden flex items-center justify-center bg-white contain-content">
               <div className="relative h-full aspect-[1024/1536] shrink-0">
                 <img
                   src="/assets/mobile/mobgameplay.avif"
@@ -114,7 +135,7 @@ export default function VideoGamePage() {
                 
                 {/* Mathematically precise mask for transparent area, with slight bleed on bottom to fill gaps */}
                 <div
-                  className="absolute top-[15.5%] left-[25%] w-[50%] h-[71%] z-0 overflow-hidden flex items-stretch justify-stretch"
+                  className="absolute top-[15.5%] left-[25%] w-[50%] h-[71%] z-0 overflow-hidden flex items-stretch justify-stretch transition-all duration-300 will-change-transform"
                 >
                   <RacingGame isMobile={true} onExit={() => setScreen('instructions')} />
                 </div>
