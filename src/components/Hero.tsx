@@ -227,7 +227,16 @@ export default function Hero() {
           </div>
 
           {/* Bottom CTA */}
-          <div className="w-full flex justify-center pb-[calc(3rem+env(safe-area-inset-bottom))] pointer-events-auto">
+          <div className="w-full flex flex-col items-center gap-3 pb-[calc(3rem+env(safe-area-inset-bottom))] pointer-events-auto">
+            <motion.p 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.8, duration: 1 }}
+              className="text-white/95 text-xs font-bold text-center px-4 leading-relaxed max-w-[320px]"
+              style={{ textShadow: "0 2px 10px rgba(0,0,0,0.9)" }}
+            >
+              ✨ For the best experience, view on desktop. But you can continue here!
+            </motion.p>
             <button 
               onClick={() => setIsPlaying(true)}
               className="bg-black text-white px-6 py-3 rounded-full text-[10px] font-semibold tracking-[0.2em] uppercase active:scale-95 transition-transform duration-300 shadow-xl border border-white/10"
