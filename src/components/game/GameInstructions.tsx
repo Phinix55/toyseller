@@ -72,30 +72,28 @@ export function GameInstructionsContent({ setActiveSheet, onPlay }: GameInstruct
 
         {/* MOBILE VISUAL */}
         <div className="md:hidden relative w-full h-full shrink-0 flex items-center justify-center overflow-hidden contain-content">
-          <div className="relative h-full aspect-[1024/1536] shrink-0">
-            {/* Mobile Digital Screen Overlay perfectly sized for mobbg6.avif */}
-            <div
-              className="absolute top-[21.5%] left-[16%] w-[36%] h-[17.5%] bg-[#8bac0f] hover:bg-[#9bbc0f] flex items-center justify-center cursor-pointer -rotate-[8deg] transition-all duration-300 z-0 will-change-transform"
-              onClick={onPlay}
-            >
-              <div className="flex flex-col items-center justify-center gap-1.5 translate-y-2">
-                <p className="text-[#0f380f] font-pixel text-[9px] text-center leading-[1.4] tracking-widest opacity-80">
-                  RACING<br />CHAMPION
+          {/* Mobile Digital Screen Overlay perfectly sized for mobbg6.avif */}
+          <div
+            className="absolute top-[21.5%] left-[16%] w-[36%] h-[17.5%] bg-[#8bac0f] hover:bg-[#9bbc0f] flex items-center justify-center cursor-pointer -rotate-[8deg] transition-all duration-300 z-0 will-change-transform"
+            onClick={onPlay}
+          >
+            <div className="flex flex-col items-center justify-center gap-1.5 translate-y-2">
+              <p className="text-[#0f380f] font-pixel text-[9px] text-center leading-[1.4] tracking-widest opacity-80">
+                RACING<br />CHAMPION
+              </p>
+              <div className="border-[1.5px] border-[#0f380f] px-1.5 py-1 animate-pulse mt-0.5 translate-x-1">
+                <p className="text-[#0f380f] font-pixel text-[6px] text-center tracking-[0.2em] whitespace-nowrap">
+                  TAP TO PLAY
                 </p>
-                <div className="border-[1.5px] border-[#0f380f] px-1.5 py-1 animate-pulse mt-0.5 translate-x-1">
-                  <p className="text-[#0f380f] font-pixel text-[6px] text-center tracking-[0.2em] whitespace-nowrap">
-                    TAP TO PLAY
-                  </p>
-                </div>
               </div>
             </div>
-
-            <img
-              src="/assets/mobile/mobbg6.avif"
-              alt="Gameplay Preview Mobile"
-              className="absolute inset-0 w-full h-full object-fill pointer-events-none z-10"
-            />
           </div>
+
+          <img
+            src="/assets/mobile/mobbg6.avif"
+            alt="Gameplay Preview Mobile"
+            className="w-full h-full object-cover pointer-events-none relative z-10"
+          />
         </div>
       </div>
 
@@ -104,7 +102,7 @@ export function GameInstructionsContent({ setActiveSheet, onPlay }: GameInstruct
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.5 }}
-        className="md:hidden absolute bottom-[calc(1.5rem+env(safe-area-inset-bottom))] left-0 right-0 px-4 z-20 pointer-events-auto flex"
+        className="md:hidden absolute bottom-6 left-0 right-0 px-4 z-20 pointer-events-auto flex"
       >
         <button 
           onClick={() => setActiveSheet('instructions')}
