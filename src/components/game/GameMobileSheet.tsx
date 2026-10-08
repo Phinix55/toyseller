@@ -94,6 +94,9 @@ export function GameMobileSheet({ activeSheet, setActiveSheet }: GameMobileSheet
             <p className="text-red-500/80 font-bold text-xs uppercase tracking-wider pt-4">
               * SPEED INCREASES WITH SCORE
             </p>
+            <p className="text-black/60 font-bold text-xs uppercase tracking-wider pt-4 flex items-center gap-2">
+              <span className="text-base">🎧</span> USE HEADPHONES FOR BETTER EXPERIENCE
+            </p>
           </div>
         )}
       </motion.div>

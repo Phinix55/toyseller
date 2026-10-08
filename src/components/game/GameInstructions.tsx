@@ -38,6 +38,9 @@ export function GameInstructionsContent({ setActiveSheet, onPlay }: GameInstruct
           <p className="text-red-500/80 font-bold text-xs uppercase tracking-wider pt-2">
             * SPEED INCREASES WITH SCORE
           </p>
+          <p className="text-black/60 font-bold text-xs uppercase tracking-wider pt-4 flex items-center gap-2">
+            <span className="text-base">🎧</span> USE HEADPHONES FOR BETTER EXPERIENCE
+          </p>
         </div>
       </div>
 
