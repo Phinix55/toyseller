@@ -162,7 +162,7 @@ We welcome contributions! Please adhere to the following guidelines:
 
 ## 📄 License & Contact
 
-**© All Rights Reserved.**
+**© All Rights Reserved. Pratik Gulabdhar Pandey**
 This project is proprietary and not open-source. All copyrights are reserved by Pratik Gulabdhar Pandey.
 
 *   **Live Demo:** [toy.pratikpandey.in](https://toy.pratikpandey.in/)
